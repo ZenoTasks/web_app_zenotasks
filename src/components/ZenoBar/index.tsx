@@ -32,13 +32,13 @@ export default async function ZenoBar() {
               <img src={session.user?.image as string} alt="profile" className="w-10 h-10 rounded-full" fetchPriority="low" loading="lazy" decoding="async" referrerPolicy="no-referrer"/>
             </NavbarItem>
             <NavbarItem>
-              <Link href="/api/auth/signout">Logout</Link>
+              <Link href="/api/auth/signout"><Button>Logout</Button></Link>
             </NavbarItem>
           </NavbarContent>
         ) : (
         <NavbarContent justify="end">
           <NavbarItem className="hidden lg:flex">
-            <Link href="/api/auth/signin">Login</Link>
+            <Link href="/api/auth/signin"><Button>Login</Button></Link>
           </NavbarItem>
         </NavbarContent>
         )}
