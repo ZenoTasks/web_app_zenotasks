@@ -10,18 +10,20 @@ const options: NextAuthOptions = {
     ],
     secret: process.env.NEXTAUTH_SECRET,
     callbacks:{
-        async session({ session, token, user }) {
-            //console.log("session",session,token,user)
-            session.user = user;
-            return session
-        },
-        async jwt({ token, user, profile, account }) {
-            //console.log("jwt",token,user,profile,account)
-            if (user) {
+        async jwt({ token, user, account }) {
+            if (user && account) {
                 token.id = user.id
+                token.idToken = account.id_token!
+                token.accessToken = account.access_token!
             }
             return token
-        }
+        },
+        async session({ session, token, user }) {
+            //console.log("session",session,token,user)
+            session.accessToken = token.accessToken as string;
+            session.idToken = token.idToken as string;
+            return session
+        },
     }
 }
 
