@@ -18,10 +18,9 @@ const options: NextAuthOptions = {
             }
             return token
         },
-        async session({ session, token, user }) {
+        async session({ session, token }) {
             //console.log("session",session,token,user)
-            session.accessToken = token.accessToken as string;
-            session.idToken = token.idToken as string;
+            session.user.idToken = token.idToken as string;
             return session
         },
     }

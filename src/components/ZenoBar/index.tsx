@@ -15,7 +15,6 @@ import options from "@/app/api/auth/[...nextauth]/options";
 export default async function ZenoBar() {
 
     const session = await getServerSession(options);
-    console.log("arraz",session)
 
     return (
     <Navbar>
