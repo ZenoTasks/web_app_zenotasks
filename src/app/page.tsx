@@ -1,11 +1,19 @@
 import { getServerSession } from "next-auth";
 import options from "./api/auth/[...nextauth]/options";
 import taskService from "../services/tasksService";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
+export default async function Home({searchParams}: {searchParams: Promise<{ [key: string]: string | undefined }>}) {
   const session = await getServerSession(options);
   const token = session?.user?.idToken as string;
-  const tasks = await taskService.getTasks(10,0,token);
+  const searchParamsObj = await searchParams;
+  const limit = searchParamsObj.limit ? parseInt(searchParamsObj.limit) : 10;
+  const page = searchParamsObj.page ? parseInt(searchParamsObj.page) : 0;
+  if(page < 0 || limit < 5) {
+    redirect("/");
+  }
+  const tasks = await taskService.getTasks(limit,page,token);
+
 
   return (
     <div className="w-full py-5 px-[20%]">
@@ -17,6 +25,10 @@ export default async function Home() {
               <p className="w-full">{task.description}</p>
             </div>
           ))}
+        </div>
+        <div className="flex gap-2 my-2 justify-center w-full">
+          <a href={`/?page=${page-1}`}><button className="bg-accent p-2 rounded-lg hover:bg-opacity-90 hover:-translate-y-0.5">Previous Page</button></a>
+          <a href={`/?page=${page+1}`}><button className="bg-accent p-2 rounded-lg hover:bg-opacity-90 hover:-translate-y-0.5">Next Page</button></a>
         </div>
     </div>
   );
