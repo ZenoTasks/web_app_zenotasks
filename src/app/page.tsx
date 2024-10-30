@@ -1,22 +1,35 @@
 import { getServerSession } from "next-auth";
 import options from "./api/auth/[...nextauth]/options";
+import taskService from "../services/tasksService";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
+export default async function Home({searchParams}: {searchParams: Promise<{ [key: string]: string | undefined }>}) {
   const session = await getServerSession(options);
-  let response;
-
-  if (session) {
-      response = await fetch('http://api:8000/api/user', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${session.user.idToken}`,
-      },
-    }).then(res => res.json());
+  const token = session?.user?.idToken as string;
+  const searchParamsObj = await searchParams;
+  const limit = searchParamsObj.limit ? parseInt(searchParamsObj.limit) : 10;
+  const page = searchParamsObj.page ? parseInt(searchParamsObj.page) : 0;
+  if(page < 0 || limit < 5) {
+    redirect("/");
   }
-  console.log("user",response)
+  const tasks = await taskService.getTasks(limit,page,token);
+
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      hola
+    <div className="w-full py-5 px-[20%]">
+        <a href="/newtask"><button className="bg-accent rounded-lg p-1 font-bold my-2 hover:bg-opacity-90 hover:-translate-y-0.5">New Task</button></a>
+        <div className="flex flex-col gap-1">
+          {tasks && tasks.map((task:any) => (
+            <div className="w-full bg-secondary rounded-lg p-2" key={task.id}>
+              <h1 className="text-2xl font-bold">{task.title}</h1>
+              <p className="w-full">{task.description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-2 my-2 justify-center w-full">
+          <a href={`/?page=${page-1}`}><button className="bg-accent p-2 rounded-lg hover:bg-opacity-90 hover:-translate-y-0.5">Previous Page</button></a>
+          <a href={`/?page=${page+1}`}><button className="bg-accent p-2 rounded-lg hover:bg-opacity-90 hover:-translate-y-0.5">Next Page</button></a>
+        </div>
     </div>
   );
 }

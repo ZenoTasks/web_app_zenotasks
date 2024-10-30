@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} zeno bg-background antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} zeno bg-background antialiased min-h-screen`}
       >
         <Providers>
           <ZenoBar/>
