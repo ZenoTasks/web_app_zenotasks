@@ -42,6 +42,22 @@ const taskService = {
         }
 
         return ""
+    },
+    
+    async updateTask(id: number,task: any, token: string) {
+        console.log("------------",task)
+        const res = await fetch(`http://api:8000/api/tasks/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(task)
+        })
+        if(res.status === 200) {
+            return res.json()
+        }
+        return ""
     }
 }
 
