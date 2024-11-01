@@ -3,6 +3,7 @@ import options from "./api/auth/[...nextauth]/options";
 import taskService from "../services/tasksService";
 import { redirect } from "next/navigation";
 import DeleteButton from "@/components/deleteButton";
+import StatusBox from "@/components/StatusBox";
 
 export default async function Home({searchParams}: {searchParams: Promise<{ [key: string]: string | undefined }>}) {
   const session = await getServerSession(options);
@@ -28,7 +29,10 @@ export default async function Home({searchParams}: {searchParams: Promise<{ [key
                 <h1 className="text-2xl font-bold">{task.title}</h1>
                 <p className="w-full">{task.description}</p>
               </div>
-              <DeleteButton id={task.id} token={token} />
+              <div className="flex items-center gap-2">
+                <StatusBox task={task} token={token} />
+                <DeleteButton id={task.id} token={token} />
+              </div>
             </div>
           ))}
         </div>
