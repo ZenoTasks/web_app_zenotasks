@@ -1,8 +1,8 @@
 const taskService = {
 
     
-    async getTasks(limit=10,page=0,token: string) {
-        const res = await fetch(`http://api:8000/api/tasks?limit=${limit}&offset=${page*limit}`, {
+    async getTasks(limit=10,page=0,order_by="id",order_direction="asc",token: string) {
+        const res = await fetch(`http://api:8000/api/tasks?limit=${limit}&offset=${page*limit}&order_by=${order_by}&order_direction=${order_direction}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
