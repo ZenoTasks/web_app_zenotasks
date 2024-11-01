@@ -2,10 +2,11 @@ import { getServerSession } from "next-auth";
 import options from "./api/auth/[...nextauth]/options";
 import taskService from "../services/tasksService";
 import { redirect } from "next/navigation";
+import DeleteButton from "@/components/deleteButton";
 
 export default async function Home({searchParams}: {searchParams: Promise<{ [key: string]: string | undefined }>}) {
   const session = await getServerSession(options);
-  const token = session?.user?.idToken as string;
+  const token: string = session?.user?.idToken as string;
   const searchParamsObj = await searchParams;
   const limit = searchParamsObj.limit ? parseInt(searchParamsObj.limit) : 10;
   const page = searchParamsObj.page ? parseInt(searchParamsObj.page) : 0;
@@ -14,15 +15,20 @@ export default async function Home({searchParams}: {searchParams: Promise<{ [key
   }
   const tasks = await taskService.getTasks(limit,page,token);
 
+  console.log(session?.user.idToken);
+
 
   return (
     <div className="w-full py-5 px-[20%]">
         <a href="/newtask"><button className="bg-accent rounded-lg p-1 font-bold my-2 hover:bg-opacity-90 hover:-translate-y-0.5">New Task</button></a>
         <div className="flex flex-col gap-1">
           {tasks && tasks.map((task:any) => (
-            <div className="w-full bg-secondary rounded-lg p-2" key={task.id}>
-              <h1 className="text-2xl font-bold">{task.title}</h1>
-              <p className="w-full">{task.description}</p>
+            <div className="w-full bg-secondary rounded-lg p-2 flex justify-between items-center" key={task.id}>
+              <div>
+                <h1 className="text-2xl font-bold">{task.title}</h1>
+                <p className="w-full">{task.description}</p>
+              </div>
+              <DeleteButton id={task.id} token={token} />
             </div>
           ))}
         </div>
