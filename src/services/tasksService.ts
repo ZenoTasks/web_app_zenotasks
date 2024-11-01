@@ -27,6 +27,21 @@ const taskService = {
             })
         }).then(res => res.json())
         return res
+    },
+
+    async deleteTask(id: number,token: string) {
+        const res = await fetch(`http://api:8000/api/tasks/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        if(res.status === 200) {
+            return res.json()
+        }
+
+        return ""
     }
 }
 
