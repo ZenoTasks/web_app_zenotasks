@@ -9,18 +9,21 @@ function OrderSorterButtons({page,limit,order_by,order_direction}: {page: number
         <div>
             <select className="rounded-lg mr-2 p-2 bg-primary text-foreground" onChange={(e) => {
                 router.push(`/?page=${page}&limit=${limit}&order_by=${e.target.value}&order_direction=${order_direction}`);
-            }}>
-                <option value="id" selected={order_by === "id"}>ID</option>
-                <option value="title" selected={order_by === "title"}>Title</option>
-                <option value="date" selected={order_by === "date"}>Date</option>
-                <option value="checked" selected={order_by === "checked"}>Checked</option>
+            }}
+                defaultValue={order_by}
+            >
+                <option value="id">ID</option>
+                <option value="title">Title</option>
+                <option value="date">Date</option>
+                <option value="checked">Checked</option>
             </select>
             <select className="rounded-lg p-2 bg-primary text-foreground" onChange={(e) => {
                 router.push(`/?page=${page}&limit=${limit}&order_by=${order_by}&order_direction=${e.target.value}`);    
             }}
+                    defaultValue={order_direction}
             >
-                <option value="asc" selected={order_direction === "asc"}>Ascending</option>
-                <option value="desc" selected={order_direction === "desc"}>Descending</option>
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
             </select>
         </div>
     )

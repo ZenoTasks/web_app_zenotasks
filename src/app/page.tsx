@@ -23,7 +23,7 @@ export default async function Home({searchParams}: {searchParams: Promise<{ [key
 
   const tasks = await taskService.getTasks(limit,page,order_by,order_direction,token);
 
-  console.log(session?.user.idToken);
+  console.log(tasks);
 
 
   return (
@@ -43,6 +43,7 @@ export default async function Home({searchParams}: {searchParams: Promise<{ [key
                 <p className="w-full">{task.description}</p>
               </div>
               <div className="flex items-center gap-2">
+                <p>{task.created_at}</p>
                 <StatusBox task={task} token={token} />
                 <DeleteButton id={task.id} token={token} />
               </div>
