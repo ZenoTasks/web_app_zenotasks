@@ -5,7 +5,6 @@ const taskService = {
 
     
     async getTasks(limit=10,page=0,order_by="id",order_direction="asc",token: string) {
-        console.log("================================",BASE_URL)
         const res = await fetch(`${BASE_URL}/tasks?limit=${limit}&offset=${page*limit}&order_by=${order_by}&order_direction=${order_direction}`, {
             method: "GET",
             headers: {
