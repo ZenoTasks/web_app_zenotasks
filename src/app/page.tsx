@@ -23,8 +23,6 @@ export default async function Home({searchParams}: {searchParams: Promise<{ [key
 
   const tasks = await taskService.getTasks(limit,page,order_by,order_direction,token);
 
-  console.log(tasks);
-
 
   return (
     <div className="w-full py-5 px-[20%]">
