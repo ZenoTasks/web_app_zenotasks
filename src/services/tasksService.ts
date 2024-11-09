@@ -1,8 +1,11 @@
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
+
 const taskService = {
 
     
     async getTasks(limit=10,page=0,order_by="id",order_direction="asc",token: string) {
-        const res = await fetch(`http://api:8000/api/tasks?limit=${limit}&offset=${page*limit}&order_by=${order_by}&order_direction=${order_direction}`, {
+        const res = await fetch(`${BASE_URL}/tasks?limit=${limit}&offset=${page*limit}&order_by=${order_by}&order_direction=${order_direction}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -15,7 +18,7 @@ const taskService = {
         return []
     },
     async createTask(title: string, description: string,token: string) {
-        const res = await fetch("http://api:8000/api/tasks", {
+        const res = await fetch(`${BASE_URL}/tasks`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +33,7 @@ const taskService = {
     },
 
     async deleteTask(id: number,token: string) {
-        const res = await fetch(`http://api:8000/api/tasks/${id}`, {
+        const res = await fetch(`${BASE_URL}/tasks/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -46,7 +49,7 @@ const taskService = {
     
     async updateTask(id: number,task: any, token: string) {
         console.log("------------",task)
-        const res = await fetch(`http://api:8000/api/tasks/${id}`, {
+        const res = await fetch(`${BASE_URL}/tasks/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
